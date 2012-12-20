@@ -100,12 +100,12 @@
           current.find('> ' + o.slides).each(function() {
             count++;
             if (count === 1) {
-              if (o.arrows) {
+              if (o.pagination) {
                 pagination += '<li><a class="' + o.tag + '-nav' + ' ' + o.tag + '-active' + '" href="#slide-' + count + '" data-toshow="' + count + '">' + count + '</a></li>';
               }
               $(this).attr('data-num', count).addClass(o.tag + '-current').addClass(o.tag);
             } else {
-              if (o.arrows) {
+              if (o.pagination) {
                 pagination += '<li><a class="' + o.tag + '-nav' + '" href="#slide-' + count + '" data-toshow="' + count + '">' + count + '</a></li>';
               }
               $(this).attr('data-num', count).addClass(o.tag);
