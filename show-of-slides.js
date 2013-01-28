@@ -39,20 +39,23 @@
                 holding; // Used as a generic container for selectors in functions as I need them
 
           current.on('hover', '*', function() {
-            interval = clearInterval(interval);
-            counting = 0;
+            if (o.timer !== 0) {
+              interval = clearInterval(interval);
+              counting = 0;
+            }
           });
           current.on('mouseout', '*', function() {
-            if (!counting) {
+            if (!counting && o.timer !== 0) {
               interval = setInterval(slide, o.timer);
               counting = 1;
             }
           });
 
           parent.on('click', '.' + /*o.navSlide*/ o.tag + '-change', function() {
-            current.find(o.slides + '.' + o.tag + '-current').addClass(o.tag + '-previous').removeClass(o.tag + '-current');
             if ($(this).hasClass(o.tag + '-next')) {
               // Show Next Slide
+
+              current.find(o.slides + '.' + o.tag + '-current').addClass(o.tag + '-previous').removeClass(o.tag + '-current');
               next++;
               holding = current.find(o.slides + '[data-num="' + next + '"]');
               // If we're alread on the last slide we need to animate in the first one
@@ -65,18 +68,27 @@
             } else {
               // Show Previous Slide
               next--;
+              current.find(o.slides + '.' + o.tag + '-current').removeClass(o.tag + '-current');
               // If we're on the first slide we need to slide in the list slide in the slideshow
               if (next === 0) {
                 holding = current.find('> ' + o.slides).last();
-                holding.addClass(o.tag + '-current').removeClass(o.tag + '-previous');
+                holding.addClass(o.tag + '-automatic').addClass(o.tag + '-previous');
+                holding.animate({}, 1 );
+                holding.removeClass(o.tag + '-automatic').addClass(o.tag + '-current').removeClass(o.tag + '-previous');
                 next = holding.attr('data-num');
               } else {
-                current.find(o.slides + '[data-num="' + next + '"]').addClass(o.tag + '-current').removeClass(o.tag + '-previous');
+                holding = current.find(o.slides + '[data-num="' + next + '"]');
+                holding.addClass(o.tag + '-automatic').addClass(o.tag + '-previous');
+                holding.animate({}, 1 );
+                holding.removeClass(o.tag + '-automatic').addClass(o.tag + '-current').removeClass(o.tag + '-previous');
+                //.addClass(o.tag + '-current').removeClass(o.tag + '-previous');
               }
             }
             if (o.pagination) { updatePagination(); }
-            interval = clearInterval(interval);
-            interval = setInterval(slide, o.timer);
+            if (o.timer !== 0) {
+              interval = clearInterval(interval);
+              interval = setInterval(slide, o.timer);
+            }
             window.setTimeout(cleanup, o.transition);
             return false;
           });
@@ -145,7 +157,9 @@
           // Adding current slide class to the first list item
           $(o.wrapper + ' .' + o.tag + ':first').addClass(o.tag + '-current');
           // Set up the loop to have slides repeating.
-          interval = setInterval(slide, o.timer);
+          if (o.timer !== 0) {
+            interval = setInterval(slide, o.timer);
+          }
 
           // Showing Pagination if it's enabled
           if (o.pagination) {
