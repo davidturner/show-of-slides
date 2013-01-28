@@ -75,7 +75,7 @@
                 holding.addClass(o.tag + '-automatic').addClass(o.tag + '-previous');
                 holding.animate({}, 1 );
                 holding.removeClass(o.tag + '-automatic').addClass(o.tag + '-current').removeClass(o.tag + '-previous');
-                next = holding.attr('data-num');
+                next = holding.prop('data-num');
               } else {
                 holding = current.find(o.slides + '[data-num="' + next + '"]');
                 holding.addClass(o.tag + '-automatic').addClass(o.tag + '-previous');
@@ -97,7 +97,7 @@
           parent.on('click', '.' + o.tag + '-nav', function () {
             // Let's make sure we're not selecting the currently shown slide's nav link.
             if (!$(this).hasClass(o.tag + '-active') ) {
-              selected = $(this).attr('data-toshow');
+              selected = $(this).prop('data-toshow');
               next = selected;
               current.find('.' + o.tag + '-current').addClass(o.tag + '-previous').removeClass(o.tag + '-current');
               current.find('[data-num="' + selected + '"]').addClass(o.tag + '-current');
@@ -115,12 +115,12 @@
               if (o.pagination) {
                 pagination += '<li><a class="' + o.tag + '-nav' + ' ' + o.tag + '-active' + '" href="#slide-' + count + '" data-toshow="' + count + '">' + count + '</a></li>';
               }
-              $(this).attr('data-num', count).addClass(o.tag + '-current').addClass(o.tag);
+              $(this).prop('data-num', count).addClass(o.tag + '-current').addClass(o.tag);
             } else {
               if (o.pagination) {
                 pagination += '<li><a class="' + o.tag + '-nav' + '" href="#slide-' + count + '" data-toshow="' + count + '">' + count + '</a></li>';
               }
-              $(this).attr('data-num', count).addClass(o.tag);
+              $(this).prop('data-num', count).addClass(o.tag);
             }
           });
 
